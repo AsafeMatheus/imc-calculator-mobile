@@ -1,21 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react'
+import {
+  View, 
+  Text
+} from 'react-native'
+import styles from './styles'
+
+// IMPORT COMPONENTS
+import Imput from './components/Input'
+import IMCButton from './components/IMCButton'
 
 export default function App() {
+  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('')
+  const [result, setResult] = useState('')
+
+  const imc = () => {
+    if (weight.length == 0 || height.length == 0){
+      alert('Verifique os dados.')
+    } else{
+      let imc = Number(weight) / (Number(height) * Number(height))
+
+      setResult(String(imc.toFixed(2)))
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+      <Text style={styles.title}>Calculadora de IMC</Text>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+      <Imput label='Informe seu Peso' set={setWeight}/>
+      <Imput label='Informe sua Altura' set={setHeight}/>
+      <IMCButton calculate={imc} />
+
+      <Text style={styles.result}>Resultado: {result}</Text>
+    </View>
+  )
+}
